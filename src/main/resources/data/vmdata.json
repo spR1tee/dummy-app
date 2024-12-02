@@ -1,0 +1,25 @@
+{
+  "vmInstances": [
+    {
+      "name": "VM1",
+      "cpu": 4,
+      "memory": 8192,
+      "image": "ImageA",
+      "cpuUsage": 60.5,
+      "memoryUsage": 4096,
+      "status": "Running",
+      "networkTraffic": 200
+    },
+    {
+      "name": "VM2",
+      "cpu": 2,
+      "memory": 4096,
+      "image": "ImageB",
+      "cpuUsage": 75.2,
+      "memoryUsage": 2048,
+      "status": "Crashed",
+      "networkTraffic": 150
+    }
+  ],
+  "requestType": "UPDATE"
+}
