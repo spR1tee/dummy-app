@@ -1,42 +1,61 @@
 package com.dummyapp;
 
-import org.springframework.http.HttpEntity;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class DummyService {
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final HttpHeaders headers = new HttpHeaders();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final List<File> jsonFiles = new ArrayList<>();
+    private int currentFileIndex = 0;
 
     public DummyService() {
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        loadJsonFiles("src/main/resources/data");
+    }
+
+    private void loadJsonFiles(String folderpath) {
+        File folder = new File(folderpath);
+        File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".json"));
+        if (files != null) {
+            jsonFiles.addAll(Arrays.asList(files));
+        }
     }
 
     @Scheduled(fixedRate = 5000) // timing: 5 sec
     public void sendRequest() {
-        try {
-            File jsonInputString = new File("src\\main\\resources\\data\\vmdata.json");
-            BufferedReader br = new BufferedReader(new FileReader(jsonInputString));
-            StringBuilder jsonContent = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                jsonContent.append(line);
-            }
-            br.close();
+        if (jsonFiles.isEmpty()) {
+            System.err.println("No JSON files found.");
+            return;
+        }
 
-            HttpEntity<String> request = new HttpEntity<>(jsonContent.toString(), headers);
+        if (currentFileIndex >= jsonFiles.size()) {
+            currentFileIndex = 0;
+        }
+
+        File jsonFile = jsonFiles.get(currentFileIndex);
+
+        try {
+            JsonNode jsonNode = objectMapper.readTree(jsonFile);
             String apiUrl = "http://localhost:8080/simulator/request";
-            String response = restTemplate.postForObject(apiUrl, request, String.class);
+            String response = restTemplate.postForObject(apiUrl, jsonNode, String.class);
             System.out.println("Response from API: " + response);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        currentFileIndex++;
     }
 }
