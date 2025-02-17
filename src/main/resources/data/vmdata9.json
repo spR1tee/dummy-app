@@ -1,5 +1,8 @@
 {
-  "vmInstances": [
+  "requestType": "UPDATE",
+  "vmsCount": 2,
+  "tasksCount": 140000,
+  "vmData": [
     {
       "name": "VM1",
       "cpu": 4,
@@ -8,10 +11,8 @@
       "startupProcess": 100,
       "reqDisk": 1073741824,
       "pricePerTick": 0.204,
-      "cpuUsage": 30.5,
-      "memoryUsage": 65.3,
       "status": "Running",
-      "networkTraffic": 200
+      "tasks": 70000
     },
     {
       "name": "VM2",
@@ -21,11 +22,8 @@
       "startupProcess": 400,
       "reqDisk": 1073741824,
       "pricePerTick": 0.102,
-      "cpuUsage": 72.5,
-      "memoryUsage": 80.1,
       "status": "Running",
-      "networkTraffic": 200
+      "tasks": 70000
     }
-  ],
-  "requestType": "UPDATE"
+  ]
 }
