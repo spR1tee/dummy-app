@@ -1,0 +1,33 @@
+{
+  "requestType": "UPDATE",
+  "vmsCount": 2,
+  "dataSinceLastSave": 350,
+  "vmData": [
+    {
+      "name": "VM1",
+      "cpu": 4,
+      "ram": 4294967296,
+      "coreProcessingPower": 0.001,
+      "startupProcess": 100,
+      "reqDisk": 1073741824,
+      "pricePerTick": 0.204,
+      "status": "RUNNING",
+      "type": "BACKEND",
+      "networkTraffic": 400,
+      "usage": 0.16
+    },
+    {
+      "name": "VM2",
+      "cpu": 2,
+      "ram": 4294967296,
+      "coreProcessingPower": 0.005,
+      "startupProcess": 400,
+      "reqDisk": 1073741824,
+      "pricePerTick": 0.102,
+      "status": "RUNNING",
+      "type": "DB",
+      "networkTraffic": 400,
+      "usage": 0.40
+    }
+  ]
+}
