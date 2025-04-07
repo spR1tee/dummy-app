@@ -1,6 +1,6 @@
 {
   "requestType": "REQUEST PREDICTION",
   "featureName": "usage",
-  "basedOnLast": 100,
-  "predictionLength": 2
+  "basedOnLast": 65,
+  "predictionLength": 1
 }
