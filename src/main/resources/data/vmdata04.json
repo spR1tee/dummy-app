@@ -1,23 +1,23 @@
 {
   "requestType": "UPDATE",
   "vmsCount": 2,
-  "dataSinceLastSave": 350,
   "vmData": [
     {
-      "name": "VM1",
-      "cpu": 2,
+      "name": "VM0",
+      "cpu": 4,
       "ram": 4294967296,
-      "coreProcessingPower": 0.008,
+      "coreProcessingPower": 0.01,
       "startupProcess": 100,
       "reqDisk": 1073741824,
       "pricePerTick": 0.204,
       "status": "RUNNING",
-      "type": "AI",
+      "type": "BACKEND",
       "networkTraffic": 400,
-      "usage": 0.50
+      "usage": 0.2,
+      "dataSinceLastSave": 1200
     },
     {
-      "name": "VM2",
+      "name": "VM1",
       "cpu": 2,
       "ram": 4294967296,
       "coreProcessingPower": 0.005,
@@ -25,9 +25,10 @@
       "reqDisk": 1073741824,
       "pricePerTick": 0.102,
       "status": "RUNNING",
-      "type": "AI",
-      "networkTraffic": 400,
-      "usage": 0.35
+      "type": "FRONTEND",
+      "networkTraffic": 250,
+      "usage": 0.3,
+      "dataSinceLastSave": 750
     }
   ]
 }

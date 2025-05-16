@@ -1,5 +1,6 @@
 {
   "requestType": "REQUEST PREDICTION",
+  "vmsCount": 2,
   "featureName": "usage",
   "basedOnLast": 65,
   "predictionLength": 1
