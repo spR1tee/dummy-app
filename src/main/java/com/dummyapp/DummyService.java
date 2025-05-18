@@ -23,7 +23,7 @@ public class DummyService {
     private int currentFileIndex = 0;
 
     public DummyService() {
-        loadJsonFiles("src/main/resources/data");
+        loadJsonFiles("src/main/resources/data/dataPred");
     }
 
     private void loadJsonFiles(String folderpath) {
