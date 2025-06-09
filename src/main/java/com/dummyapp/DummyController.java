@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,10 +25,10 @@ public class DummyController {
             Files.createDirectories(path.getParent());
             Files.writeString(path, data);
 
-            return ResponseEntity.ok("JSON fájl elmentve: " + filename);
+            return ResponseEntity.ok("JSON file saved: " + filename);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Hiba a fájl mentésekor: " + e.getMessage());
+                    .body("Error while saving: " + e.getMessage());
         }
     }
 }
