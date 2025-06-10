@@ -12,16 +12,25 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * REST API kontroller az adatok fogadásához és mentéséhez.
+ * Ez egy egyszerű végpont, amely JSON adatokat fogad és fájlként tárolja.
+ */
 @RestController
 @RequestMapping("/dummy")
 public class DummyController {
-
+    /**
+     * POST endpoint JSON adatok fogadásához és fájlba mentéséhez.
+     *
+     * @param data A bejövő JSON adat String formátumban
+     * @return ResponseEntity a művelet eredményével és státuszkóddal
+     */
     @PostMapping("/receiveData")
     public ResponseEntity<String> receiveData(@RequestBody String data) {
         System.out.println(data);
         try {
             String filename = "received_" + System.currentTimeMillis() + ".json";
-            Path path = Paths.get("src/main/resources/received_files/" + filename);
+            Path path = Paths.get("received_files/" + filename);
             Files.createDirectories(path.getParent());
             Files.writeString(path, data);
 
