@@ -1,0 +1,8 @@
+{
+  "requestType": "REQUEST FUTURE BEHAVIOUR",
+  "vmsCount": 2,
+  "featureName": "usage",
+  "basedOnLast": 60,
+  "predictionLength": 120,
+  "threshold": 0.8
+}

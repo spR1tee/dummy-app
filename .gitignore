@@ -2,6 +2,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+/src/main/resources/received_files/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -11,8 +12,6 @@ target/
 *.iws
 *.iml
 *.ipr
-/src/main/resources/data/
-/src/main/resources/received_files/
 
 ### Eclipse ###
 .apt_generated
