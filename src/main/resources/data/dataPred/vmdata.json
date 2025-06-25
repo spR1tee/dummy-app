@@ -3,6 +3,6 @@
   "vmsCount": 2,
   "featureName": "usage",
   "basedOnLast": 60,
-  "predictionLength": 120,
+  "predictionLength": 60,
   "threshold": 0.8
 }

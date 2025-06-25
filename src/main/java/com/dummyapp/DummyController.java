@@ -11,10 +11,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -52,7 +57,6 @@ public class DummyController {
 
             List<String> labels = List.of("Baseline", "Prediction without scaling", "Prediction with scaling");
 
-            // Az egyes metric-ek listája
             List<String> metrics = List.of(
                     "Total IoT cost in USD",
                     "Total energy consumption in kWh",
@@ -60,15 +64,14 @@ public class DummyController {
                     "Total number of simulated VM tasks"
             );
 
-            // Minden metric-hez külön chart
             for (String metric : metrics) {
                 CategoryChart chart = new CategoryChartBuilder()
                         .width(900).height(600)
                         .title("Simulation Comparison - " + metric)
-                        .xAxisTitle("Simulation")
+                        .xAxisTitle("Type of Simulation")
                         .yAxisTitle(metric)
                         .build();
-                chart.getStyler().setDecimalPattern("#,###");
+                chart.getStyler().setDecimalPattern("#,##0.###");
 
                 List<Double> values = new ArrayList<>();
                 for (SimulationResult sim : storedSimulations) {
@@ -84,13 +87,12 @@ public class DummyController {
 
                 chart.addSeries(metric, labels, values);
 
-                // Mentés külön fájlba, metric neve is legyen a fájlnévben
                 String chartname = "received_files/chart_" + metric + "_" + System.currentTimeMillis() + ".png";
                 Path outputPath = Paths.get(chartname);
                 Files.createDirectories(outputPath.getParent());
                 BitmapEncoder.saveBitmap(chart, chartname, BitmapEncoder.BitmapFormat.PNG);
             }
-
+            generateComparisonTableImage(storedSimulations, "received_files");
             storedSimulations.clear();
 
             return ResponseEntity.ok("JSON file saved: " + filename);
@@ -99,5 +101,92 @@ public class DummyController {
                     .body("Error while saving: " + e.getMessage());
         }
     }
-}
+
+    public static void generateComparisonTableImage(List<SimulationResult> storedSimulations, String outputFolder) throws IOException {
+        int cellWidth = 250;
+        int cellHeight = 40;
+        int cols = 1 + storedSimulations.size(); // 1 metric oszlop + annyi, ahány szimuláció
+        int rows = 1 + 4; // 1 fejléc + 4 metrika
+        int width = cellWidth * cols;
+        int height = cellHeight * rows;
+        DecimalFormat formatter = new DecimalFormat("0.#####");
+
+        BufferedImage tableImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = tableImage.createGraphics();
+
+        // Háttér
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, width, height);
+
+        // Vonalak
+        g.setColor(Color.BLACK);
+        for (int r = 0; r <= rows; r++) {
+            g.drawLine(0, r * cellHeight, width, r * cellHeight);
+        }
+        for (int c = 0; c <= cols; c++) {
+            g.drawLine(c * cellWidth, 0, c * cellWidth, height);
+        }
+
+        Font font = new Font("Arial", Font.PLAIN, 14);
+        g.setFont(font);
+        FontMetrics fm = g.getFontMetrics();
+
+        // Fejléc háttér
+        g.setColor(new Color(220, 220, 220));
+        g.fillRect(cellWidth, 0, cellWidth * storedSimulations.size(), cellHeight);
+        g.setColor(Color.BLACK);
+
+        // Fejléc szöveg
+        String[] labels = {"Baseline", "Prediction without scaling", "Prediction with scaling"};
+        for (int c = 0; c < cols; c++) {
+            String text = (c == 0) ? "Metric" : labels[c - 1];
+            int textWidth = fm.stringWidth(text);
+            int x = c * cellWidth + (cellWidth - textWidth) / 2;
+            int y = (cellHeight + fm.getAscent()) / 2 - 2;
+            g.drawString(text, x, y);
+        }
+
+        // Metrikák
+        String[] metrics = {
+                "Total IoT cost in USD",
+                "Total energy consumption in kWh",
+                "Total moved data in MB",
+                "Total number of simulated VM tasks"
+        };
+
+        for (int r = 0; r < metrics.length; r++) {
+            // Metric név
+            String metricName = metrics[r];
+            int textWidth = fm.stringWidth(metricName);
+            int x = 5 + (cellWidth - textWidth) / 2;
+            int y = (r + 1) * cellHeight + (cellHeight + fm.getAscent()) / 2 - 2;
+            g.drawString(metricName, x, y);
+
+            // Értékek
+            for (int c = 0; c < storedSimulations.size(); c++) {
+                SimulationResult sim = storedSimulations.get(c);
+                double val = switch (metricName) {
+                    case "Total IoT cost in USD" -> sim.total_iot_cost_usd;
+                    case "Total energy consumption in kWh" -> sim.total_energy_consumption_kwh;
+                    case "Total moved data in MB" -> sim.total_moved_data_mb;
+                    case "Total number of simulated VM tasks" -> sim.total_vm_tasks_simulated;
+                    default -> 0.0;
+                };
+                String valStr = formatter.format(val);
+                int valWidth = fm.stringWidth(valStr);
+                int valX = (c + 1) * cellWidth + (cellWidth - valWidth) / 2;
+                g.drawString(valStr, valX, y);
+            }
+        }
+
+        g.dispose();
+
+        // Mappa létrehozása, ha nem létezik
+        Path outputPath = Path.of(outputFolder);
+        Files.createDirectories(outputPath);
+
+        String filename = outputFolder + "/simulation_table_" + System.currentTimeMillis() + ".png";
+        ImageIO.write(tableImage, "png", new File(filename));
+        }
+    }
 
