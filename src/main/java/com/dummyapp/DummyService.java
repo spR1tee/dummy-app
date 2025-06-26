@@ -28,7 +28,7 @@ public class DummyService {
     private static final String APPID = "database";
 
     public DummyService() {
-        loadJsonFiles("src/main/resources/data/dataPred");
+        loadJsonFiles("src/main/resources/data");
     }
 
     /**
