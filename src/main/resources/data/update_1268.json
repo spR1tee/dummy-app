@@ -13,8 +13,8 @@
       "status": "RUNNING",
       "type": "BACKEND",
       "networkTraffic": 400,
-      "usage": 0.07,
-      "dataSinceLastSave": 720
+      "usage": 0.32,
+      "dataSinceLastSave": 768
     },
     {
       "name": "VM1",
@@ -27,8 +27,8 @@
       "status": "RUNNING",
       "type": "FRONTEND",
       "networkTraffic": 250,
-      "usage": 0.91,
-      "dataSinceLastSave": 741
+      "usage": 0.65,
+      "dataSinceLastSave": 620
     }
   ]
 }

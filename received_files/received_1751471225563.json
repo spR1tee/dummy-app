@@ -1,0 +1,10 @@
+{
+  "runtime_ms" : 3600001,
+  "runtime_minutes" : 60.00001666666667,
+  "runtime_hours" : 1.0000002777777777,
+  "total_iot_cost_usd" : 0.34000009444444446,
+  "total_energy_consumption_kwh" : 0.22617125,
+  "total_moved_data_mb" : 89460,
+  "total_vm_tasks_simulated" : 1320,
+  "number_of_vms_utilized" : 2
+}

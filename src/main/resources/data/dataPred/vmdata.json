@@ -4,5 +4,6 @@
   "featureName": "usage",
   "basedOnLast": 60,
   "predictionLength": 60,
-  "threshold": 0.8
+  "threshold": 0.6,
+  "modelType": "lr"
 }
